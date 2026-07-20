@@ -1,0 +1,962 @@
+// app.js — frontend logika
+
+// ============ I18N ============
+const I18N = {
+  uz: {
+    search_placeholder: "Nima qidiryapsiz?",
+    balance_tooltip: "USD/UZS almashtirish",
+    balance_label: "Balans:",
+    deposit_btn: "To'ldirish",
+    post_btn: "E'lon joylash",
+    hero_eyebrow: "Har bir e'lon — bitta chek. Bitta dollar.",
+    hero_title: "Sotasizmi? Sotib olasizmi?<br>E'loningizni <em>bugun</em> chop eting.",
+    hero_sub: "Ro'yxatdan o'tish shart emas. Formani to'ldiring, $1 to'lang — e'loningiz shu zahoti ko'rinadi.",
+    cat_all: "Barchasi",
+    cat_transport: "🚗 Transport",
+    cat_uyjoy: "🏠 Uy-joy",
+    cat_elektronika: "📱 Elektronika",
+    cat_ish: "💼 Ish",
+    cat_xizmat: "🛠 Xizmatlar",
+    cat_boshqa: "📦 Boshqa",
+    cat_transport_plain: "Transport",
+    cat_uyjoy_plain: "Uy-joy",
+    cat_elektronika_plain: "Elektronika",
+    cat_ish_plain: "Ish",
+    cat_xizmat_plain: "Xizmatlar",
+    cat_boshqa_plain: "Boshqa",
+    empty_state: "Hozircha e'lonlar yo'q. Birinchi bo'lib siz joylang!",
+    footer_copy: "© 2026 AZZO's MARKET. Har bir e'lon — bir dollarlik ishonch.",
+    post_eyebrow: "E'lon joylash — $1 (balansdan yechiladi)",
+    post_h2: "E'lon ma'lumotlari",
+    form_balance_label: "Balansingiz:",
+    label_media: "Rasm yoki video",
+    label_title: "Sarlavha",
+    ph_title: "Masalan: Chevrolet Nexia, 2019",
+    label_description: "Tavsif",
+    ph_description: "Holati, tafsilotlar...",
+    label_price: "Narx (ixtiyoriy)",
+    ph_price: "Masalan: $8,500",
+    label_category: "Kategoriya",
+    label_city: "Shahar",
+    label_phone: "Telefon",
+    submit_ad_btn: "Joylash — $1",
+    submitting: "Yuborilmoqda...",
+    post_error_generic: "Xatolik: formani tekshiring",
+    network_error: "Tarmoq xatoligi",
+    success_eyebrow: "Tayyor",
+    success_h2: "E'loningiz chop etildi ✓",
+    success_balance_label: "Balansingizdan $1 yechildi. Qolgan balans:",
+    success_note: "E'loningiz saytda barchaga ko'rinmoqda. Xaridorlar sizga to'g'ridan-to'g'ri qo'ng'iroq qilishadi.",
+    close_btn: "Yopish",
+    deposit_eyebrow: "Balansni to'ldirish",
+    deposit_h2: "Karta yoki kripto orqali to'ldirish",
+    label_amount: "Summa (min $1, max $100,000)",
+    label_receipt: "To'lov chekini yuklang (rasm yoki PDF)",
+    submit_receipt_btn: "Chekni yuborish",
+    deposit_note: "To'lov qilgach, chek skrinshotini yuklang. Admin tasdiqlagach balansingiz avtomatik to'ldiriladi (odatda tez orada).",
+    paid_label: "✓ To'langan",
+    methods_load_error: "Rekvizitlarni yuklab bo'lmadi",
+    amount_range_error: "Summani $1 dan $100,000 gacha kiriting",
+    method_required_error: "To'lov usulini tanlang",
+    receipt_required_error: "Chek skrinshotini yuklang",
+    copy_label: "📋 Nusxalash",
+    copied_label: "✓ Nusxalandi",
+    menu_aria: "Ko'proq",
+    buy_label: "🛒 Sotib olaman",
+    close_lightbox_aria: "Rasmni yopish",
+    label_cover: "Asosiy rasm (Cover)",
+    cover_placeholder: "+ Cover rasm tanlang",
+    label_info: "Ma'lumot",
+    label_other_photos: "Boshqa rasmlar (ixtiyoriy, maks. 10 tagacha jami)",
+    add_photo_btn: "+ Rasm qo'shish",
+    label_whatsapp: "WhatsApp (ixtiyoriy)",
+    ph_whatsapp: "+998 90 123 45 67",
+    label_telegram: "Telegram (ixtiyoriy)",
+    ph_telegram: "@username yoki kanal",
+    max_photos_error: "Maksimal 10 ta rasm yuklash mumkin",
+    choose_receipt_btn: "📎 Chek faylini tanlash",
+    prev_aria: "Oldingi rasm",
+    next_aria: "Keyingi rasm",
+    contact_call: "📞 Qo'ng'iroq qilish",
+    contact_whatsapp: "💬 WhatsApp orqali yozish",
+    contact_telegram: "✈️ Telegramda yozish",
+    details_contact_label: "Bog'lanish",
+    photo_count_price: "{count} ta rasm — jami ${cost}",
+    post_action_label: "Joylash",
+  },
+  en: {
+    search_placeholder: "What are you looking for?",
+    balance_tooltip: "Switch USD/UZS",
+    balance_label: "Balance:",
+    deposit_btn: "Top up",
+    post_btn: "Post an ad",
+    hero_eyebrow: "One listing — one receipt. One dollar.",
+    hero_title: "Selling? Buying?<br>Publish your listing <em>today</em>.",
+    hero_sub: "No sign-up needed. Fill in the form, pay $1 — your listing goes live instantly.",
+    cat_all: "All",
+    cat_transport: "🚗 Vehicles",
+    cat_uyjoy: "🏠 Real Estate",
+    cat_elektronika: "📱 Electronics",
+    cat_ish: "💼 Jobs",
+    cat_xizmat: "🛠 Services",
+    cat_boshqa: "📦 Other",
+    cat_transport_plain: "Vehicles",
+    cat_uyjoy_plain: "Real Estate",
+    cat_elektronika_plain: "Electronics",
+    cat_ish_plain: "Jobs",
+    cat_xizmat_plain: "Services",
+    cat_boshqa_plain: "Other",
+    empty_state: "No listings yet. Be the first to post one!",
+    footer_copy: "© 2026 AZZO's MARKET. Every listing — a dollar of trust.",
+    post_eyebrow: "Post a listing — $1 (deducted from balance)",
+    post_h2: "Listing details",
+    form_balance_label: "Your balance:",
+    label_media: "Photo or video",
+    label_title: "Title",
+    ph_title: "E.g.: Chevrolet Nexia, 2019",
+    label_description: "Description",
+    ph_description: "Condition, details...",
+    label_price: "Price (optional)",
+    ph_price: "E.g.: $8,500",
+    label_category: "Category",
+    label_city: "City",
+    label_phone: "Phone",
+    submit_ad_btn: "Post — $1",
+    submitting: "Submitting...",
+    post_error_generic: "Error: please check the form",
+    network_error: "Network error",
+    success_eyebrow: "Done",
+    success_h2: "Your listing is live ✓",
+    success_balance_label: "$1 was deducted. Remaining balance:",
+    success_note: "Your listing is now visible to everyone. Buyers will call you directly.",
+    close_btn: "Close",
+    deposit_eyebrow: "Top up balance",
+    deposit_h2: "Top up by card or crypto",
+    label_amount: "Amount (min $1, max $100,000)",
+    label_receipt: "Upload payment receipt (image or PDF)",
+    submit_receipt_btn: "Submit receipt",
+    deposit_note: "After paying, upload a screenshot of the receipt. Once an admin confirms it, your balance is topped up automatically (usually shortly after).",
+    paid_label: "✓ Paid",
+    methods_load_error: "Couldn't load payment details",
+    amount_range_error: "Enter an amount between $1 and $100,000",
+    method_required_error: "Choose a payment method",
+    receipt_required_error: "Upload a receipt screenshot",
+    copy_label: "📋 Copy",
+    copied_label: "✓ Copied",
+    menu_aria: "More",
+    buy_label: "🛒 I want to buy",
+    close_lightbox_aria: "Close image",
+    label_cover: "Cover photo",
+    cover_placeholder: "+ Choose cover photo",
+    label_info: "Details",
+    label_other_photos: "Other photos (optional, up to 10 total)",
+    add_photo_btn: "+ Add photo",
+    label_whatsapp: "WhatsApp (optional)",
+    ph_whatsapp: "+998 90 123 45 67",
+    label_telegram: "Telegram (optional)",
+    ph_telegram: "@username or channel",
+    max_photos_error: "You can upload up to 10 photos",
+    choose_receipt_btn: "📎 Choose receipt file",
+    prev_aria: "Previous photo",
+    next_aria: "Next photo",
+    contact_call: "📞 Call",
+    contact_whatsapp: "💬 Message on WhatsApp",
+    contact_telegram: "✈️ Message on Telegram",
+    details_contact_label: "Contact",
+    photo_count_price: "{count} photo(s) — total ${cost}",
+    post_action_label: "Post",
+  },
+  ru: {
+    search_placeholder: "Что вы ищете?",
+    balance_tooltip: "Переключить USD/UZS",
+    balance_label: "Баланс:",
+    deposit_btn: "Пополнить",
+    post_btn: "Разместить объявление",
+    hero_eyebrow: "Одно объявление — один чек. Один доллар.",
+    hero_title: "Продаёте? Покупаете?<br>Опубликуйте объявление <em>сегодня</em>.",
+    hero_sub: "Регистрация не нужна. Заполните форму, заплатите $1 — объявление появится мгновенно.",
+    cat_all: "Все",
+    cat_transport: "🚗 Транспорт",
+    cat_uyjoy: "🏠 Недвижимость",
+    cat_elektronika: "📱 Электроника",
+    cat_ish: "💼 Работа",
+    cat_xizmat: "🛠 Услуги",
+    cat_boshqa: "📦 Другое",
+    cat_transport_plain: "Транспорт",
+    cat_uyjoy_plain: "Недвижимость",
+    cat_elektronika_plain: "Электроника",
+    cat_ish_plain: "Работа",
+    cat_xizmat_plain: "Услуги",
+    cat_boshqa_plain: "Другое",
+    empty_state: "Пока нет объявлений. Будьте первым!",
+    footer_copy: "© 2026 AZZO's MARKET. Каждое объявление — доллар доверия.",
+    post_eyebrow: "Размещение объявления — $1 (списывается с баланса)",
+    post_h2: "Данные объявления",
+    form_balance_label: "Ваш баланс:",
+    label_media: "Фото или видео",
+    label_title: "Заголовок",
+    ph_title: "Например: Chevrolet Nexia, 2019",
+    label_description: "Описание",
+    ph_description: "Состояние, подробности...",
+    label_price: "Цена (необязательно)",
+    ph_price: "Например: $8,500",
+    label_category: "Категория",
+    label_city: "Город",
+    label_phone: "Телефон",
+    submit_ad_btn: "Разместить — $1",
+    submitting: "Отправка...",
+    post_error_generic: "Ошибка: проверьте форму",
+    network_error: "Ошибка сети",
+    success_eyebrow: "Готово",
+    success_h2: "Ваше объявление опубликовано ✓",
+    success_balance_label: "Списано $1. Остаток баланса:",
+    success_note: "Ваше объявление теперь видно всем. Покупатели будут звонить вам напрямую.",
+    close_btn: "Закрыть",
+    deposit_eyebrow: "Пополнение баланса",
+    deposit_h2: "Пополнение картой или крипто",
+    label_amount: "Сумма (мин $1, макс $100,000)",
+    label_receipt: "Загрузите чек об оплате (фото или PDF)",
+    submit_receipt_btn: "Отправить чек",
+    deposit_note: "После оплаты загрузите скриншот чека. После подтверждения администратором баланс пополнится автоматически (обычно вскоре).",
+    paid_label: "✓ Оплачено",
+    methods_load_error: "Не удалось загрузить реквизиты",
+    amount_range_error: "Введите сумму от $1 до $100,000",
+    method_required_error: "Выберите способ оплаты",
+    receipt_required_error: "Загрузите скриншот чека",
+    copy_label: "📋 Копировать",
+    copied_label: "✓ Скопировано",
+    menu_aria: "Ещё",
+    buy_label: "🛒 Хочу купить",
+    close_lightbox_aria: "Закрыть изображение",
+    label_cover: "Обложка (главное фото)",
+    cover_placeholder: "+ Выбрать обложку",
+    label_info: "Данные",
+    label_other_photos: "Другие фото (необязательно, макс. 10 всего)",
+    add_photo_btn: "+ Добавить фото",
+    label_whatsapp: "WhatsApp (необязательно)",
+    ph_whatsapp: "+998 90 123 45 67",
+    label_telegram: "Telegram (необязательно)",
+    ph_telegram: "@username или канал",
+    max_photos_error: "Можно загрузить максимум 10 фото",
+    choose_receipt_btn: "📎 Выбрать файл чека",
+    prev_aria: "Предыдущее фото",
+    next_aria: "Следующее фото",
+    contact_call: "📞 Позвонить",
+    contact_whatsapp: "💬 Написать в WhatsApp",
+    contact_telegram: "✈️ Написать в Telegram",
+    details_contact_label: "Связаться",
+    photo_count_price: "{count} фото — итого ${cost}",
+    post_action_label: "Разместить",
+  },
+  ar: {
+    search_placeholder: "عن ماذا تبحث؟",
+    balance_tooltip: "التبديل بين USD/UZS",
+    balance_label: "الرصيد:",
+    deposit_btn: "شحن الرصيد",
+    post_btn: "نشر إعلان",
+    hero_eyebrow: "كل إعلان — إيصال واحد. دولار واحد.",
+    hero_title: "تبيع؟ تشتري؟<br>انشر إعلانك <em>اليوم</em>.",
+    hero_sub: "لا حاجة للتسجيل. املأ النموذج وادفع دولارًا واحدًا — يظهر إعلانك فورًا.",
+    cat_all: "الكل",
+    cat_transport: "🚗 مركبات",
+    cat_uyjoy: "🏠 عقارات",
+    cat_elektronika: "📱 إلكترونيات",
+    cat_ish: "💼 وظائف",
+    cat_xizmat: "🛠 خدمات",
+    cat_boshqa: "📦 أخرى",
+    cat_transport_plain: "مركبات",
+    cat_uyjoy_plain: "عقارات",
+    cat_elektronika_plain: "إلكترونيات",
+    cat_ish_plain: "وظائف",
+    cat_xizmat_plain: "خدمات",
+    cat_boshqa_plain: "أخرى",
+    empty_state: "لا توجد إعلانات بعد. كن أول من ينشر!",
+    footer_copy: "© 2026 AZZO's MARKET. كل إعلان — دولار من الثقة.",
+    post_eyebrow: "نشر إعلان — دولار واحد (يُخصم من الرصيد)",
+    post_h2: "تفاصيل الإعلان",
+    form_balance_label: "رصيدك:",
+    label_media: "صورة أو فيديو",
+    label_title: "العنوان",
+    ph_title: "مثال: Chevrolet Nexia, 2019",
+    label_description: "الوصف",
+    ph_description: "الحالة، التفاصيل...",
+    label_price: "السعر (اختياري)",
+    ph_price: "مثال: $8,500",
+    label_category: "الفئة",
+    label_city: "المدينة",
+    label_phone: "الهاتف",
+    submit_ad_btn: "نشر — دولار واحد",
+    submitting: "جارٍ الإرسال...",
+    post_error_generic: "خطأ: يرجى مراجعة النموذج",
+    network_error: "خطأ في الشبكة",
+    success_eyebrow: "تم",
+    success_h2: "تم نشر إعلانك ✓",
+    success_balance_label: "تم خصم دولار واحد. الرصيد المتبقي:",
+    success_note: "إعلانك مرئي الآن للجميع. سيتصل بك المشترون مباشرة.",
+    close_btn: "إغلاق",
+    deposit_eyebrow: "شحن الرصيد",
+    deposit_h2: "الشحن عبر البطاقة أو العملة الرقمية",
+    label_amount: "المبلغ (الحد الأدنى $1، الحد الأقصى $100,000)",
+    label_receipt: "ارفع إيصال الدفع (صورة أو PDF)",
+    submit_receipt_btn: "إرسال الإيصال",
+    deposit_note: "بعد الدفع، ارفع لقطة شاشة للإيصال. بعد موافقة المشرف سيُشحن رصيدك تلقائيًا (عادة خلال وقت قصير).",
+    paid_label: "✓ مدفوع",
+    methods_load_error: "تعذر تحميل بيانات الدفع",
+    amount_range_error: "أدخل مبلغًا بين $1 و $100,000",
+    method_required_error: "اختر طريقة الدفع",
+    receipt_required_error: "ارفع صورة الإيصال",
+    copy_label: "📋 نسخ",
+    copied_label: "✓ تم النسخ",
+    menu_aria: "المزيد",
+    buy_label: "🛒 أريد الشراء",
+    close_lightbox_aria: "إغلاق الصورة",
+    label_cover: "الصورة الرئيسية (الغلاف)",
+    cover_placeholder: "+ اختر صورة الغلاف",
+    label_info: "التفاصيل",
+    label_other_photos: "صور أخرى (اختياري، بحد أقصى 10 صور)",
+    add_photo_btn: "+ إضافة صورة",
+    label_whatsapp: "واتساب (اختياري)",
+    ph_whatsapp: "+998 90 123 45 67",
+    label_telegram: "تيليجرام (اختياري)",
+    ph_telegram: "@username أو قناة",
+    max_photos_error: "يمكن رفع 10 صور كحد أقصى",
+    choose_receipt_btn: "📎 اختر ملف الإيصال",
+    prev_aria: "الصورة السابقة",
+    next_aria: "الصورة التالية",
+    contact_call: "📞 اتصال",
+    contact_whatsapp: "💬 مراسلة عبر واتساب",
+    contact_telegram: "✈️ مراسلة عبر تيليجرام",
+    details_contact_label: "التواصل",
+    photo_count_price: "{count} صورة — الإجمالي ${cost}",
+    post_action_label: "نشر",
+  },
+};
+
+let currentLang = localStorage.getItem('site_lang') || 'uz';
+
+function t(key) {
+  return (I18N[currentLang] && I18N[currentLang][key]) || I18N.uz[key] || key;
+}
+
+function categoryLabel(cat) {
+  const map = { transport: 'cat_transport', 'uy-joy': 'cat_uyjoy', elektronika: 'cat_elektronika', ish: 'cat_ish', xizmat: 'cat_xizmat', boshqa: 'cat_boshqa' };
+  return map[cat] ? t(map[cat]) : cat;
+}
+
+function applyLanguage(lang) {
+  currentLang = I18N[lang] ? lang : 'uz';
+  localStorage.setItem('site_lang', currentLang);
+
+  document.documentElement.lang = currentLang;
+  document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+
+  document.querySelectorAll('[data-i18n]').forEach((el) => {
+    el.textContent = t(el.dataset.i18n);
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach((el) => {
+    el.innerHTML = t(el.dataset.i18nHtml);
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
+    el.placeholder = t(el.dataset.i18nPlaceholder);
+  });
+  document.querySelectorAll('[data-i18n-title]').forEach((el) => {
+    el.title = t(el.dataset.i18nTitle);
+  });
+
+  document.querySelectorAll('.lang-btn').forEach((btn) => {
+    btn.classList.toggle('active', btn.dataset.lang === currentLang);
+  });
+
+  // Dinamik ravishda render qilinadigan qismlarni yangilash
+  loadAds();
+  if (typeof updatePhotoPriceNote === 'function') updatePhotoPriceNote();
+}
+
+document.getElementById('langSwitcher').addEventListener('click', (e) => {
+  const btn = e.target.closest('.lang-btn');
+  if (!btn) return;
+  applyLanguage(btn.dataset.lang);
+});
+
+let UZS_RATE = 12650;
+let showUzs = false;
+let currentCategory = '';
+let currentQuery = '';
+
+const adsGrid = document.getElementById('adsGrid');
+const emptyState = document.getElementById('emptyState');
+
+// ---------- Anonim foydalanuvchi ID (login yo'q, brauzerga saqlanadi) ----------
+function getUserId() {
+  let id = localStorage.getItem('user_id');
+  if (!id) {
+    id = crypto.randomUUID();
+    localStorage.setItem('user_id', id);
+  }
+  return id;
+}
+const USER_ID = getUserId();
+function authHeaders(extra) {
+  return Object.assign({ 'x-user-id': USER_ID }, extra || {});
+}
+
+// ---------- Balans ----------
+async function loadBalance() {
+  try {
+    const res = await fetch('/api/balance', { headers: authHeaders() });
+    const data = await res.json();
+    if (data.uzs_rate) UZS_RATE = data.uzs_rate;
+    renderBalance(data.balance_usd || 0);
+  } catch (e) { /* jim */ }
+}
+function renderBalance(usd) {
+  const el = document.getElementById('balanceAmount');
+  el.textContent = showUzs
+    ? `${Math.round(usd * UZS_RATE).toLocaleString('ru-RU')} so'm`
+    : `$${usd.toFixed(2)}`;
+  const formEl = document.getElementById('formBalanceAmount');
+  if (formEl) formEl.textContent = `$${usd.toFixed(2)}`;
+  document.getElementById('balancePill').dataset.usd = usd;
+}
+document.getElementById('balancePill').addEventListener('click', () => {
+  showUzs = !showUzs;
+  renderBalance(Number(document.getElementById('balancePill').dataset.usd || 0));
+});
+
+// ---------- E'lonlarni yuklash ----------
+async function loadAds() {
+  const params = new URLSearchParams();
+  if (currentCategory) params.set('category', currentCategory);
+  if (currentQuery) params.set('q', currentQuery);
+
+  const res = await fetch(`/api/ads?${params.toString()}`);
+  const ads = await res.json();
+  renderAds(ads);
+}
+
+const adsCache = {}; // id -> ad ma'lumotlari (details modal va lightbox uchun)
+
+function renderAds(ads) {
+  adsGrid.innerHTML = '';
+  emptyState.hidden = ads.length > 0;
+
+  ads.forEach((ad) => {
+    adsCache[ad.id] = ad;
+    const card = document.createElement('div');
+    card.className = 'ad-card';
+    card.dataset.adId = ad.id;
+
+    const images = (ad.media && ad.media.length ? ad.media : (ad.media_url ? [{ url: ad.media_url, type: ad.media_type }] : []));
+    const cover = images[0];
+
+    let mediaHtml = '';
+    if (cover) {
+      mediaHtml = cover.type === 'video'
+        ? `<video class="ad-media" src="${cover.url}" muted loop playsinline onmouseover="this.play()" onmouseout="this.pause()"></video>`
+        : `<img class="ad-media" src="${cover.url}" alt="${escapeHtml(ad.title)}" loading="lazy" data-zoomable="1" />`;
+    }
+
+    card.innerHTML = `
+      <div class="ad-card-menu">
+        <button type="button" class="ad-card-menu-btn" aria-label="${t('menu_aria')}">⋯</button>
+        <div class="ad-card-menu-dropdown" hidden>
+          <a class="ad-card-menu-item" href="tel:${escapeHtml(ad.phone)}">${t('buy_label')}</a>
+        </div>
+      </div>
+      ${mediaHtml}
+      <div class="ad-card-body">
+        <div class="ad-card-id">
+          <span>#${ad.id.slice(0, 8).toUpperCase()}</span>
+          <span class="paid">${t('paid_label')}</span>
+        </div>
+        <h3>${escapeHtml(ad.title)}</h3>
+        <p>${escapeHtml(ad.description)}</p>
+        <div class="ad-card-footer">
+          <span class="ad-price">${ad.price ? escapeHtml(ad.price) : ''}</span>
+          <span class="ad-meta">${categoryLabel(ad.category)} · ${escapeHtml(ad.city || '')}</span>
+        </div>
+        <a class="ad-phone" href="tel:${escapeHtml(ad.phone)}">📞 ${escapeHtml(ad.phone)}</a>
+      </div>
+    `;
+    adsGrid.appendChild(card);
+  });
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str || '';
+  return div.innerHTML;
+}
+
+function adImages(ad) {
+  if (ad.media && ad.media.length) return ad.media.filter((m) => m.type !== 'video');
+  if (ad.media_url && ad.media_type !== 'video') return [{ url: ad.media_url, type: 'image' }];
+  return [];
+}
+
+// ---------- Karta bosilganda: 3-nuqta menyu / rasm zoom / "Ma'lumotlar" ----------
+adsGrid.addEventListener('click', (e) => {
+  const menuBtn = e.target.closest('.ad-card-menu-btn');
+  if (menuBtn) {
+    const dropdown = menuBtn.nextElementSibling;
+    const wasHidden = dropdown.hidden;
+    closeAllCardMenus();
+    dropdown.hidden = !wasHidden;
+    e.stopPropagation();
+    return;
+  }
+  if (e.target.closest('.ad-card-menu-dropdown')) return; // menyu ichidagi havolaga bosilsa — o'z holicha ishlasin
+  if (e.target.closest('.ad-phone')) return; // qo'ng'iroq havolasi o'z holicha ishlasin
+
+  const card = e.target.closest('.ad-card');
+  if (!card) return;
+  const ad = adsCache[card.dataset.adId];
+  if (!ad) return;
+
+  const zoomImg = e.target.closest('img[data-zoomable]');
+  if (zoomImg) {
+    openLightbox(adImages(ad), 0);
+    return;
+  }
+
+  openDetails(ad);
+});
+
+document.addEventListener('click', closeAllCardMenus);
+function closeAllCardMenus() {
+  document.querySelectorAll('.ad-card-menu-dropdown').forEach((d) => { d.hidden = true; });
+}
+
+// ---------- "Ma'lumotlar" (e'lon tafsilotlari) modal ----------
+const detailsOverlay = document.getElementById('detailsOverlay');
+
+function openDetails(ad) {
+  const images = adImages(ad);
+  const gallery = document.getElementById('detailsGallery');
+
+  if (images.length) {
+    gallery.hidden = false;
+    gallery.innerHTML = `
+      <img id="detailsGalleryImg" src="${images[0].url}" alt="${escapeHtml(ad.title)}" data-zoomable="1" />
+      ${images.length > 1 ? `
+        <button type="button" class="gallery-arrow gallery-prev" aria-label="${t('prev_aria')}">‹</button>
+        <button type="button" class="gallery-arrow gallery-next" aria-label="${t('next_aria')}">›</button>
+        <div class="gallery-dots">${images.map((_, i) => `<span class="gallery-dot${i === 0 ? ' active' : ''}"></span>`).join('')}</div>
+      ` : ''}
+    `;
+    let idx = 0;
+    const imgEl = document.getElementById('detailsGalleryImg');
+    const dots = gallery.querySelectorAll('.gallery-dot');
+    function showIdx(i) {
+      idx = (i + images.length) % images.length;
+      imgEl.src = images[idx].url;
+      dots.forEach((d, di) => d.classList.toggle('active', di === idx));
+    }
+    const prevBtn = gallery.querySelector('.gallery-prev');
+    const nextBtn = gallery.querySelector('.gallery-next');
+    if (prevBtn) prevBtn.addEventListener('click', (e) => { e.stopPropagation(); showIdx(idx - 1); });
+    if (nextBtn) nextBtn.addEventListener('click', (e) => { e.stopPropagation(); showIdx(idx + 1); });
+    imgEl.addEventListener('click', () => openLightbox(images, idx));
+  } else {
+    gallery.hidden = true;
+    gallery.innerHTML = '';
+  }
+
+  const contactRows = [];
+  contactRows.push(`<a class="contact-btn" href="tel:${escapeHtml(ad.phone)}"><span class="contact-icon">📞</span> ${escapeHtml(ad.phone)}</a>`);
+  if (ad.whatsapp) {
+    const waNumber = ad.whatsapp.replace(/[^\d]/g, '');
+    contactRows.push(`<a class="contact-btn" href="https://wa.me/${waNumber}" target="_blank" rel="noopener"><span class="contact-icon">💬</span> ${t('contact_whatsapp')}</a>`);
+  }
+  if (ad.telegram) {
+    const tgHandle = ad.telegram.replace('@', '').trim();
+    contactRows.push(`<a class="contact-btn" href="https://t.me/${escapeHtml(tgHandle)}" target="_blank" rel="noopener"><span class="contact-icon">✈️</span> ${t('contact_telegram')} (@${escapeHtml(tgHandle)})</a>`);
+  }
+
+  document.getElementById('detailsBody').innerHTML = `
+    <h2>${escapeHtml(ad.title)}</h2>
+    ${ad.price ? `<div class="details-price">${escapeHtml(ad.price)}</div>` : ''}
+    <div class="details-meta">${categoryLabel(ad.category)} · ${escapeHtml(ad.city || '')} · #${ad.id.slice(0, 8).toUpperCase()}</div>
+    <p class="details-desc">${escapeHtml(ad.description)}</p>
+    <div class="details-contact-label">${t('details_contact_label')}</div>
+    <div class="details-contact-list">${contactRows.join('')}</div>
+  `;
+
+  detailsOverlay.hidden = false;
+}
+document.getElementById('closeDetailsModal').addEventListener('click', () => { detailsOverlay.hidden = true; });
+detailsOverlay.addEventListener('click', (e) => { if (e.target === detailsOverlay) detailsOverlay.hidden = true; });
+
+// ---------- Rasm lightbox (kattalashtirish, sayt orqada ko'rinadi, o'ng/chap strelkalar) ----------
+const lightboxOverlay = document.getElementById('lightboxOverlay');
+const lightboxImg = document.getElementById('lightboxImg');
+const lightboxPrev = document.getElementById('lightboxPrev');
+const lightboxNext = document.getElementById('lightboxNext');
+const lightboxCounter = document.getElementById('lightboxCounter');
+let lightboxImages = [];
+let lightboxIndex = 0;
+
+function openLightbox(images, startIndex) {
+  lightboxImages = images && images.length ? images : [];
+  lightboxIndex = startIndex || 0;
+  if (!lightboxImages.length) return;
+  showLightboxIndex(lightboxIndex);
+  lightboxOverlay.hidden = false;
+}
+function showLightboxIndex(i) {
+  lightboxIndex = (i + lightboxImages.length) % lightboxImages.length;
+  lightboxImg.src = lightboxImages[lightboxIndex].url;
+  const multi = lightboxImages.length > 1;
+  lightboxPrev.hidden = !multi;
+  lightboxNext.hidden = !multi;
+  lightboxCounter.hidden = !multi;
+  if (multi) lightboxCounter.textContent = `${lightboxIndex + 1} / ${lightboxImages.length}`;
+}
+function closeLightbox() {
+  lightboxOverlay.hidden = true;
+  lightboxImg.src = '';
+  lightboxImages = [];
+}
+document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+lightboxPrev.addEventListener('click', () => showLightboxIndex(lightboxIndex - 1));
+lightboxNext.addEventListener('click', () => showLightboxIndex(lightboxIndex + 1));
+lightboxOverlay.addEventListener('click', (e) => {
+  if (e.target === lightboxOverlay) closeLightbox();
+});
+document.addEventListener('keydown', (e) => {
+  if (lightboxOverlay.hidden) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowRight') showLightboxIndex(lightboxIndex + 1);
+  if (e.key === 'ArrowLeft') showLightboxIndex(lightboxIndex - 1);
+});
+
+// ---------- Kategoriya filtrlari ----------
+document.getElementById('categoryChips').addEventListener('click', (e) => {
+  const btn = e.target.closest('.chip');
+  if (!btn) return;
+  document.querySelectorAll('.chip').forEach((c) => c.classList.remove('active'));
+  btn.classList.add('active');
+  currentCategory = btn.dataset.cat;
+  loadAds();
+});
+
+// ---------- Qidiruv ----------
+document.getElementById('searchBtn').addEventListener('click', doSearch);
+document.getElementById('searchInput').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') doSearch();
+});
+function doSearch() {
+  currentQuery = document.getElementById('searchInput').value.trim();
+  loadAds();
+}
+
+// ---------- Cover + Boshqa rasmlar (maks. 10 ta, har biri $1) ----------
+const MAX_PHOTOS = 10;
+let coverFile = null;
+let galleryFiles = [];
+
+const coverInput = document.getElementById('coverInput');
+const coverDropzone = document.getElementById('coverDropzone');
+const coverPreview = document.getElementById('coverPreview');
+const coverPreviewImg = document.getElementById('coverPreviewImg');
+const galleryInput = document.getElementById('galleryInput');
+const galleryPreviewList = document.getElementById('galleryPreviewList');
+const photoPriceNote = document.getElementById('photoPriceNote');
+
+coverInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  coverFile = file;
+  coverPreviewImg.src = URL.createObjectURL(file);
+  coverDropzone.hidden = true;
+  coverPreview.hidden = false;
+  updatePhotoPriceNote();
+});
+document.getElementById('coverRemoveBtn').addEventListener('click', () => {
+  coverFile = null;
+  coverInput.value = '';
+  coverPreview.hidden = true;
+  coverDropzone.hidden = false;
+  updatePhotoPriceNote();
+});
+
+galleryInput.addEventListener('change', (e) => {
+  const errBox = document.getElementById('postError');
+  const newFiles = Array.from(e.target.files || []);
+  const capacity = MAX_PHOTOS - (coverFile ? 1 : 0) - galleryFiles.length;
+  if (newFiles.length > capacity) {
+    errBox.textContent = t('max_photos_error');
+    errBox.hidden = false;
+  }
+  galleryFiles = galleryFiles.concat(newFiles.slice(0, Math.max(0, capacity)));
+  galleryInput.value = '';
+  renderGalleryPreviews();
+  updatePhotoPriceNote();
+});
+
+function renderGalleryPreviews() {
+  galleryPreviewList.innerHTML = '';
+  galleryFiles.forEach((file, i) => {
+    const thumb = document.createElement('div');
+    thumb.className = 'gallery-thumb';
+    thumb.innerHTML = `<img src="${URL.createObjectURL(file)}" alt="rasm ${i + 1}" /><button type="button" class="img-remove-btn" data-index="${i}" aria-label="✕">✕</button>`;
+    galleryPreviewList.appendChild(thumb);
+  });
+}
+galleryPreviewList.addEventListener('click', (e) => {
+  const btn = e.target.closest('.img-remove-btn');
+  if (!btn) return;
+  galleryFiles.splice(Number(btn.dataset.index), 1);
+  renderGalleryPreviews();
+  updatePhotoPriceNote();
+});
+
+function totalPhotoCount() { return (coverFile ? 1 : 0) + galleryFiles.length; }
+function updatePhotoPriceNote() {
+  const count = totalPhotoCount();
+  const cost = Math.max(1, count);
+  photoPriceNote.innerHTML = t('photo_count_price').replace('{count}', count).replace('{cost}', `<strong>${cost}</strong>`);
+  document.getElementById('submitAdBtn').textContent = `${t('post_action_label')} — $${cost}`;
+}
+
+function resetPhotoState() {
+  coverFile = null;
+  galleryFiles = [];
+  coverInput.value = '';
+  galleryInput.value = '';
+  coverPreview.hidden = true;
+  coverDropzone.hidden = false;
+  galleryPreviewList.innerHTML = '';
+  updatePhotoPriceNote();
+}
+
+// ---------- POST AD Modal ochish/yopish ----------
+const overlay = document.getElementById('modalOverlay');
+const stepForm = document.getElementById('stepForm');
+const stepSuccess = document.getElementById('stepSuccess');
+
+document.getElementById('openPostModal').addEventListener('click', () => {
+  overlay.hidden = false;
+  showStep(stepForm);
+});
+document.getElementById('closeModal').addEventListener('click', closeModal);
+overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+function closeModal() {
+  overlay.hidden = true;
+  document.getElementById('adForm').reset();
+  resetPhotoState();
+  document.getElementById('postError').hidden = true;
+  showStep(stepForm);
+}
+function showStep(step) {
+  [stepForm, stepSuccess].forEach((s) => (s.hidden = true));
+  step.hidden = false;
+}
+document.getElementById('successCloseBtn').addEventListener('click', closeModal);
+
+// ---------- E'lonni joylash (balansdan rasm soniga qarab $ yechiladi) ----------
+document.getElementById('adForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const errBox = document.getElementById('postError');
+  errBox.hidden = true;
+  const submitBtn = document.getElementById('submitAdBtn');
+  submitBtn.disabled = true;
+  submitBtn.textContent = t('submitting');
+
+  const formData = new FormData();
+  const form = e.target;
+  ['title', 'description', 'price', 'category', 'city', 'phone', 'whatsapp', 'telegram'].forEach((name) => {
+    formData.append(name, form.elements[name].value);
+  });
+  if (coverFile) formData.append('media', coverFile);
+  galleryFiles.forEach((f) => formData.append('media', f));
+
+  try {
+    const res = await fetch('/api/ads', { method: 'POST', headers: authHeaders(), body: formData });
+    const data = await res.json();
+    if (!res.ok) {
+      errBox.textContent = data.error || t('post_error_generic');
+      errBox.hidden = false;
+      if (typeof data.balance_usd === 'number') renderBalance(data.balance_usd);
+      return;
+    }
+    renderBalance(data.balance_usd);
+    document.getElementById('successBalance').textContent = `$${data.balance_usd.toFixed(2)}`;
+    showStep(stepSuccess);
+    loadAds();
+  } catch (err) {
+    errBox.textContent = t('network_error');
+    errBox.hidden = false;
+  } finally {
+    submitBtn.disabled = false;
+    updatePhotoPriceNote();
+  }
+});
+
+// ---------- Deposit (Karta / Kripto — qo'lda) ----------
+const depositOverlay = document.getElementById('depositOverlay');
+
+document.getElementById('openDepositModal').addEventListener('click', () => {
+  depositOverlay.hidden = false;
+  loadPaymentMethods();
+  updateManualUzsNote();
+});
+document.getElementById('closeDepositModal').addEventListener('click', () => { depositOverlay.hidden = true; });
+depositOverlay.addEventListener('click', (e) => { if (e.target === depositOverlay) depositOverlay.hidden = true; });
+
+function updateManualUzsNote() {
+  const amt = Number(document.getElementById('manualAmount').value) || 0;
+  document.getElementById('manualUzsNote').textContent = `≈ ${Math.round(amt * UZS_RATE).toLocaleString('ru-RU')} so'm`;
+}
+
+// ---------- Qo'lda to'ldirish uchun rekvizitlarni yuklash ----------
+let paymentMethodsCache = null;
+let selectedManualMethod = null;
+
+async function loadPaymentMethods() {
+  if (paymentMethodsCache) { renderManualMethods(); return; }
+  try {
+    const res = await fetch('/api/payment-methods');
+    paymentMethodsCache = await res.json();
+    renderManualMethods();
+  } catch (e) {
+    document.getElementById('manualMethodList').innerHTML = `<p class="card-error">${t('methods_load_error')}</p>`;
+  }
+}
+
+function renderManualMethods() {
+  const list = document.getElementById('manualMethodList');
+  const all = [...paymentMethodsCache.cards, ...paymentMethodsCache.crypto_wallets];
+  list.innerHTML = '';
+  all.forEach((m) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'pay-method';
+    btn.dataset.key = m.key;
+    btn.innerHTML = `<span class="pay-icon">${m.number ? '💳' : '🪙'}</span> ${m.label}`;
+    btn.addEventListener('click', () => selectManualMethod(m));
+    list.appendChild(btn);
+  });
+  if (all.length && !selectedManualMethod) selectManualMethod(all[0]);
+}
+
+function selectManualMethod(m) {
+  selectedManualMethod = m;
+  document.querySelectorAll('#manualMethodList .pay-method').forEach((b) => {
+    b.classList.toggle('selected', b.dataset.key === m.key);
+  });
+  const value = m.number || m.address;
+  document.getElementById('manualWalletDetails').innerHTML = `
+    <div class="wallet-box">
+      <div class="wallet-info">
+        <strong>${m.label}</strong>
+        <code id="walletValueText">${value}</code>
+      </div>
+      <button type="button" class="copy-btn" id="copyWalletBtn" title="${t('copy_label')}">${t('copy_label')}</button>
+    </div>
+  `;
+  document.getElementById('copyWalletBtn').addEventListener('click', () => copyWalletValue(value));
+}
+
+function copyWalletValue(value) {
+  const btn = document.getElementById('copyWalletBtn');
+  const done = () => {
+    btn.textContent = t('copied_label');
+    setTimeout(() => { btn.textContent = t('copy_label'); }, 1500);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(value).then(done).catch(() => fallbackCopy(value, done));
+  } else {
+    fallbackCopy(value, done);
+  }
+}
+
+function fallbackCopy(value, done) {
+  const ta = document.createElement('textarea');
+  ta.value = value;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); done(); } catch (e) { /* jim */ }
+  document.body.removeChild(ta);
+}
+
+document.getElementById('manualAmount').addEventListener('input', () => {
+  const amt = Number(document.getElementById('manualAmount').value) || 0;
+  document.getElementById('manualUzsNote').textContent = `≈ ${Math.round(amt * UZS_RATE).toLocaleString('ru-RU')} so'm`;
+});
+
+// ---------- Chek fayli tanlash / X bilan olib tashlash ----------
+const manualReceiptInput = document.getElementById('manualReceipt');
+const receiptPreview = document.getElementById('receiptPreview');
+const receiptChooseBtn = document.getElementById('receiptChooseBtn');
+
+manualReceiptInput.addEventListener('change', () => {
+  const file = manualReceiptInput.files[0];
+  if (!file) { receiptPreview.hidden = true; return; }
+  document.getElementById('receiptFileName').textContent = `📎 ${file.name}`;
+  receiptPreview.hidden = false;
+  receiptChooseBtn.hidden = true;
+});
+document.getElementById('receiptRemoveBtn').addEventListener('click', () => {
+  manualReceiptInput.value = '';
+  receiptPreview.hidden = true;
+  receiptChooseBtn.hidden = false;
+});
+function resetReceiptState() {
+  manualReceiptInput.value = '';
+  receiptPreview.hidden = true;
+  receiptChooseBtn.hidden = false;
+}
+
+document.getElementById('manualSubmitBtn').addEventListener('click', async () => {
+  const errorBox = document.getElementById('manualError');
+  errorBox.hidden = true;
+
+  const amount = Number(document.getElementById('manualAmount').value);
+  const file = manualReceiptInput.files[0];
+
+  if (!amount || amount < 1 || amount > 100000) {
+    errorBox.textContent = t('amount_range_error');
+    errorBox.hidden = false;
+    return;
+  }
+  if (!selectedManualMethod) {
+    errorBox.textContent = t('method_required_error');
+    errorBox.hidden = false;
+    return;
+  }
+  if (!file) {
+    errorBox.textContent = t('receipt_required_error');
+    errorBox.hidden = false;
+    return;
+  }
+
+  const btn = document.getElementById('manualSubmitBtn');
+  btn.disabled = true;
+  btn.textContent = t('submitting');
+
+  const formData = new FormData();
+  formData.append('amount', amount);
+  formData.append('method', selectedManualMethod.key);
+  formData.append('receipt', file);
+
+  try {
+    const res = await fetch('/api/balance/deposit/manual', { method: 'POST', headers: authHeaders(), body: formData });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || t('post_error_generic'));
+    alert(data.message);
+    depositOverlay.hidden = true;
+    resetReceiptState();
+  } catch (err) {
+    errorBox.textContent = err.message;
+    errorBox.hidden = false;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = t('submit_receipt_btn');
+  }
+});
+
+applyLanguage(currentLang);
+loadBalance();
