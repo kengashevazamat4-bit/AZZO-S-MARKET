@@ -1,0 +1,18 @@
+{
+  "99fe4fbf-bd23-476e-b0da-ad68b5a4c38b": {
+    "balance_usd": 8,
+    "history": [
+      {
+        "type": "deposit_uzcard",
+        "amount_usd": 10,
+        "deposit_id": "1f0b72ac-2719-4ce4-9c3f-d6128933754a",
+        "at": "2026-07-20T13:38:13.691Z"
+      },
+      {
+        "type": "ad_post",
+        "amount_usd": -2,
+        "at": "2026-07-20T13:39:06.285Z"
+      }
+    ]
+  }
+}

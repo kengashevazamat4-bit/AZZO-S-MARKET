@@ -1,0 +1,31 @@
+[
+  {
+    "id": "4ca9ea94-e2fd-45da-8f8a-cfaf4fe9e600",
+    "title": "bir",
+    "description": "sun jinwoo",
+    "price": "89",
+    "category": "transport",
+    "city": "12",
+    "phone": "+998937612814",
+    "whatsapp": "+998937612818",
+    "telegram": "@azzo_off1_26",
+    "media": [
+      {
+        "url": "/uploads/e30d19bc-127d-4549-acbc-4b05596eeb5e.jpg",
+        "type": "image"
+      },
+      {
+        "url": "/uploads/2765bb57-0c30-4c5d-aeb6-7219e0d519ee.jpg",
+        "type": "image"
+      }
+    ],
+    "media_url": "/uploads/e30d19bc-127d-4549-acbc-4b05596eeb5e.jpg",
+    "media_type": "image",
+    "cost_usd": 2,
+    "status": "published",
+    "payment_method": "balance",
+    "created_by": "99fe4fbf-bd23-476e-b0da-ad68b5a4c38b",
+    "created_at": "2026-07-20T13:39:06.287Z",
+    "published_at": "2026-07-20T13:39:06.287Z"
+  }
+]

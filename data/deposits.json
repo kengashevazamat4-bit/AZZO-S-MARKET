@@ -1,0 +1,12 @@
+[
+  {
+    "id": "1f0b72ac-2719-4ce4-9c3f-d6128933754a",
+    "user_id": "99fe4fbf-bd23-476e-b0da-ad68b5a4c38b",
+    "amount_usd": 10,
+    "method": "uzcard",
+    "receipt_url": "/receipts/6f970b96-5947-4421-9193-82ab6bf40fc7.png",
+    "status": "approved",
+    "created_at": "2026-07-20T13:37:54.769Z",
+    "approved_at": "2026-07-20T13:38:13.688Z"
+  }
+]
