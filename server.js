@@ -46,9 +46,23 @@ if (!MONGODB_URI) {
   console.error("❌ Xatolik: MONGODB_URI muhit o'zgaruvchisi topilmadi!");
 }
 
+// Ulanmagan holatda so'rovlar 10 soniya "osilib" turib, keyin butun serverni
+// yiqitib yubormasligi uchun bufferlashni o'chiramiz — ulanmagan bo'lsa,
+// so'rov darhol xato qaytaradi (yuqoridagi 503 middleware buni allaqachon ushlaydi).
+mongoose.set('bufferCommands', false);
+
 mongoose.connect(MONGODB_URI, { serverSelectionTimeoutMS: 8000 })
   .then(() => console.log("🚀 MongoDB Atlas bazasiga muvaffaqiyatli ulandi!"))
   .catch((err) => console.error("❌ MongoDB bazasiga ulanishda xatolik:", err.message));
+
+// Kutilmagan xatolar (masalan, tarmoq bir zumga uzilib qolsa) butun serverni
+// yiqitib yubormasin — faqat log'ga yozib, ishlashda davom etamiz.
+process.on('unhandledRejection', (err) => {
+  console.error('⚠️  Kutilmagan xatolik (unhandledRejection):', err && err.message ? err.message : err);
+});
+process.on('uncaughtException', (err) => {
+  console.error('⚠️  Kutilmagan xatolik (uncaughtException):', err && err.message ? err.message : err);
+});
 
 // Baza hali ulanmagan bo'lsa, so'rov osilib qolmasin — darhol tushunarli xato qaytaramiz
 // (payment-methods bazaga bog'liq emas, shuning uchun bu tekshiruvdan istisno)
